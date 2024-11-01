@@ -1,27 +1,3 @@
-<script setup>
-import { Link, router } from '@inertiajs/vue3';
-
-defineProps({
-    products: Array
-})
-
-const addToCart = (product) => {
-    console.log(product)
-    router.post(route('cart.store', product), {
-        onSuccess: (page) => {
-            if (page.props.flash.success) {
-                Swal.fire({
-                    toast: true,
-                    icon: "success",
-                    position: "top-end",
-                    showConfirmButton: false,
-                    title: page.props.flash.success
-                });
-            }
-        },
-    })
-}
-</script>
 <template>
      <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-2 xl:gap-x-8">
                     <div v-for="product in products" :key="product.id" class="group relative">
@@ -77,8 +53,34 @@ const addToCart = (product) => {
                                 </h3>
                                 <p class="mt-1 text-sm text-gray-500">{{ product.brand.name }}</p>
                             </div>
-                            <p class="text-sm font-medium text-gray-900">${{ product.price }}</p>
+                            <p class="text-sm font-medium text-gray-900">R${{ product.price }}</p>
                         </div>
                     </div>
                 </div>
 </template>
+
+
+<script setup>
+import { Link, router } from '@inertiajs/vue3';
+
+defineProps({
+    products: Array
+})
+
+const addToCart = (product) => {
+    console.log(product)
+    router.post(route('cart.store', product), {
+        onSuccess: (page) => {
+            if (page.props.flash.success) {
+                Swal.fire({
+                    toast: true,
+                    icon: "success",
+                    position: "top-end",
+                    showConfirmButton: false,
+                    title: page.props.flash.success
+                });
+            }
+        },
+    })
+}
+</script>

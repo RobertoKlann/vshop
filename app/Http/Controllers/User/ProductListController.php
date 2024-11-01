@@ -14,18 +14,25 @@ class ProductListController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category', 'brand', 'product_images');
-        $filterProducts = $products->filtered()->paginate(9)->withQueryString();
+        $products = cache()->remember('products', 600, function () {
+            return ProductResource::collection(Product::with('category', 'brand', 'product_images')->filtered()->paginate(9)->withQueryString());
+        });
 
-        $categories = Category::get();
-        $brands = Brand::get();
+        $categories = cache()->remember('categories', 600, function () {
+            return Category::get();
+        });
+
+        $brands = cache()->remember('brands', 600, function () {
+            return Brand::get();
+        });
 
         return Inertia::render(
             'User/ProductList',
             [
                 'categories' => $categories,
                 'brands' => $brands,
-                'products' => ProductResource::collection($filterProducts)
+                'products' => $products
+                // 'products' => ProductResource::collection($filterProducts)
             ]
         );
     }
@@ -33,7 +40,9 @@ class ProductListController extends Controller
 
     public function detail($slug)
     {
-        $product = Product::with('category', 'brand', 'product_images')->where('slug', $slug)->first();
+        $product = cache()->remember('product_' . $slug, 600, function () use($slug) {
+            return Product::with('category', 'brand', 'product_images')->where('slug', $slug)->first();
+        });
 
         return Inertia::render(
             'User/ProductDetail',

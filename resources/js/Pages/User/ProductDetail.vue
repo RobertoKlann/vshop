@@ -27,7 +27,6 @@
                 <span style="font-size: 24px">Descrição</span>
 
                 <span>
-
                     {{ product.description }}
                 </span>
             </div>
@@ -37,6 +36,7 @@
 
 
 <script setup>
+
 import UserLayouts from './Layouts/UserLayouts.vue';
 import { ref, watch } from 'vue'
 import {
@@ -52,12 +52,12 @@ import {
     TransitionChild,
     TransitionRoot,
 } from '@headlessui/vue'
+
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/vue/20/solid'
 import Products from './Components/Products.vue'
 import SecondaryButtonVue from '@/Components/SecondaryButton.vue';
 import { router, useForm } from '@inertiajs/vue3';
-
 
 const props = defineProps({
     product: Object,
